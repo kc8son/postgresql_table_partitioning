@@ -130,7 +130,7 @@ GROUP BY tableoid
 ORDER BY partition_name;
 ```
 
-<img src="images/dbeaver_partitions.png" alt="isolated" width="200"/>
+<img src="images/dbeaver_partitions.png" alt="dbeaver_partitions.png" width="200"/>
 
 ## 📊 Performance Examples
 
@@ -152,8 +152,8 @@ GROUP BY transaction_type;
 -- Query by partition
 select count(*) from transactions_2024_01 t ;
 ```
-<img src="images/queryplan_on_2024_01.png" alt="isolated" width="200"/>
-<img src="images/queryplan_on_2024_06_07_08.pngg" alt="isolated" width="200"/>
+<img src="images/queryplan_on_2024_01.png" alt="queryplan_on_2024_01" width="200"/>
+<img src="images/queryplan_on_2024_06_07_08.png" alt="queryplan_on_2024_06_07_08.png" width="200"/>
 
 ### Maintenance Operations
 
