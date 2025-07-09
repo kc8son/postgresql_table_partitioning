@@ -39,7 +39,7 @@ Each CSV contains (somewhat) realistic bank transactions with:
 
 ## 🔧 Terminology
 
-In the interest of keeping things clear, the 'master' or 'main' table is called a table.  The divisions are called partitions.  This becomes potntially confusomg because each partition can be queried just like a table.  This becomes useful for example if a table is partitioned by region and a report specific to that region is required.  The report can query the partition for that region specifically.
+In the interest of keeping things clear, the 'master' or 'main' table is called a table.  The divisions are called partitions.  This becomes potentially confusing because each partition can be queried just like a table.  Querying by partition becomes useful for example, if a table is partitioned by region and a report specific to that region is required.  The report can query the partition for that region specifically.
 
 ## 🚀 Quick Start
 
