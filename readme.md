@@ -4,7 +4,7 @@ A comprehensive demonstration of PostgreSQL table partitioning techniques using 
 
 ## 🎯 Overview
 
-This project showcases how to implement and manage **table partitioning** in PostgreSQL, using a year's worth of checking account transactions as sample data. Table partitioning is a powerful database optimization technique that can significantly improve query performance and maintenance operations on large datasets.
+Over the past year I have had the opportunity to work with PostgreSQL.  I have been able to dig into some intermediate topics.  Table partitioning is one such topic. This project showcases how to implement and manage **table partitioning** in PostgreSQL, using a year's worth of checking account transactions as sample data. Table partitioning is a powerful database optimization technique that can significantly improve query performance and maintenance operations on large datasets.
 
 ## 🔧 What is Table Partitioning?
 
@@ -29,13 +29,17 @@ example_checking_account_data/
 └── 2024_12.csv    # December transactions
 ```
 
-Each CSV contains realistic bank transactions with:
+Each CSV contains (somewhat) realistic bank transactions with:
 
 - `transaction_id`: Unique identifier
 - `transaction_date`: Date of the transaction
 - `description`: Transaction description
 - `transaction_type`: DEPOSIT, WITHDRAWAL, TRANSFER, FEE
 - `amount`: Transaction amount (negative for debits)
+
+## 🔧 Terminology
+
+In the interest of keeping things clear, the 'master' or 'main' table is called a table.  The divisions are called partitions.  This becomes potntially confusomg because each partition can be queried just like a table.  This becomes useful for example if a table is partitioned by region and a report specific to that region is required.  The report can query the partition for that region specifically.
 
 ## 🚀 Quick Start
 
@@ -79,7 +83,7 @@ for month in {01..12}; do
 done
 ```
 
-#### Option B: Using DBeaver (GUI)
+#### Option B: Using DBeaver (GUI) - my preference.
 
 1. **Connect to your PostgreSQL database** in DBeaver
 2. **Right-click on the `transactions` table** in the Database Navigator
@@ -126,6 +130,8 @@ GROUP BY tableoid
 ORDER BY partition_name;
 ```
 
+<img src="images/dbeaver_partitions.png" alt="isolated" width="200"/>
+
 ## 📊 Performance Examples
 
 ### Query Performance Comparison
@@ -142,7 +148,12 @@ SELECT transaction_type, SUM(amount)
 FROM transactions 
 WHERE transaction_date BETWEEN '2024-06-01' AND '2024-08-31'
 GROUP BY transaction_type;
+
+-- Query by partition
+select count(*) from transactions_2024_01 t ;
 ```
+<img src="images/queryplan_on_2024_01.png" alt="isolated" width="200"/>
+<img src="images/queryplan_on_2024_06_07_08.pngg" alt="isolated" width="200"/>
 
 ### Maintenance Operations
 
@@ -183,6 +194,7 @@ $$ LANGUAGE plpgsql;
 
 ```sql
 -- Create indexes on partitions for optimal performance
+-- NOTE: These indexes are for the specific partition.
 CREATE INDEX CONCURRENTLY ON transactions_2024_01 (transaction_date);
 CREATE INDEX CONCURRENTLY ON transactions_2024_01 (transaction_type);
 
@@ -215,7 +227,7 @@ This partitioning strategy is ideal for:
 ## 🤝 Contributing
 
 Feel free to contribute by:
-
+- Addressing rows that don't match a defined partition.
 - Adding more partitioning strategies (hash, list partitioning)
 - Including performance benchmarks
 - Adding automation scripts
