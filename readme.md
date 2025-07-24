@@ -48,7 +48,7 @@ In the interest of keeping things clear, the 'master' or 'main' table is called 
 - PostgreSQL 10+ (native partitioning support)
 - psql command-line tool or your preferred PostgreSQL client
 
-### 1. Create the Database Schema
+### 1. [Create the Database Schema](./postgresql_code/01_create_tables.sql)
 
 ```sql
 -- Create the main partitioned table
@@ -105,9 +105,9 @@ done
 
 - Select multiple CSV files at once
 - DBeaver will process them sequentially
-- Monitor the import progress in the task view
+- Monitor the import progress in the task view.  
 
-### 3. Verify Partitioning
+### 3. [Verify Partitioning](postgresql_code/03_verify_data_after_import.sql)
 
 ```sql
 -- Check partition information
@@ -134,7 +134,7 @@ ORDER BY partition_name;
 
 ## 📊 Performance Examples
 
-### Query Performance Comparison
+### [Query Performance Comparison](postgresql_code/04_examine_query_plans.sql)
 
 ```sql
 -- This query will only scan the January partition
@@ -149,13 +149,13 @@ FROM transactions
 WHERE transaction_date BETWEEN '2024-06-01' AND '2024-08-31'
 GROUP BY transaction_type;
 
--- Query by partition
+-- Query by a single partition
 select count(*) from transactions_2024_01 t ;
 ```
 <img src="images/queryplan_on_2024_01.png" alt="queryplan_on_2024_01" width="200"/>
 <img src="images/queryplan_on_2024_06_07_08.png" alt="queryplan_on_2024_06_07_08.png" width="200"/>
 
-### Maintenance Operations
+### [Maintenance Operations](postgresql_code/05_manage_old_data.sql)
 
 ```sql
 -- Efficiently drop old data (e.g., January 2024)
@@ -228,6 +228,7 @@ This partitioning strategy is ideal for:
 
 Feel free to contribute by:
 - Addressing rows that don't match a defined partition.
+- Creating a new partition and moving data to it from the default partition.
 - Adding more partitioning strategies (hash, list partitioning)
 - Including performance benchmarks
 - Adding automation scripts
